@@ -10,11 +10,17 @@
                     <input type="url" placeholder="Enter a valid URL" class="form-control" id="originUrl" ng-model="main.originUrl" name="originUrl">
                 </div>
             </div>
+            <div class="row">
+                <div class="form-group col-lg-6 col-lg-offset-3 col-md-8 col-md-offset-2">
+                    <label for="desiredUrl">Enter your desired URL (optional): </label>
+                    <input type="text" placeholder="Enter your desired URL (optional)" class="form-control" id="desiredUrl" ng-model="main.desiredUrl" name="desiredUrl">
+                </div>
+            </div>
 
             <div class="row">
                 <div class="col-lg-1 col-lg-offset-3 col-md-3 col-md-offset-2 col-sm-6">
                     <button type="submit" class="btn btn-primary" ng-click="main.sendUrls()" ng-disabled="!main.originUrl">Generate short URL</button>
-                    <button type="reset" class="btn btn-warning">Cancel</button>
+                    <button type="reset" class="btn btn-warning">Clear</button>
                 </div>
             </div>
         </form>

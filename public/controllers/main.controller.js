@@ -12,6 +12,7 @@ function MainController(UrlService, $location, $timeout) {
     self.generatedShortUrl = '';
     self.error = '';
     self.originUrl = '';
+    self.desiredUrl = '';
     self.absUrl = $location.absUrl();
     self.errorFullUrl = '';
     self.fullUrl = '';
@@ -28,10 +29,15 @@ function MainController(UrlService, $location, $timeout) {
             self.hideMessage('error');
             return;
         }
+        if (angular.isString(self.desiredUrl) && self.desiredUrl.length > 0 && !self.reg.test(self.desiredUrl)) {
+            self.error = 'desiredUrl is not valid';
+            self.hideMessage('error');
+            return;
+        }
         self.generatedShortUrl = '';
         self.error = '';
 
-        UrlService.createUrl({originUrl: self.originUrl}).then(function (res) {
+        UrlService.createUrl({originUrl: self.originUrl, shortUrl: self.desiredUrl}).then(function (res) {
             self.generatedShortUrl = self.absUrl + res.data.shortUrl;
         }, function (err) {
             self.error = err.data.msg;
