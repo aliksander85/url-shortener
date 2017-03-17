@@ -1,0 +1,1 @@
+angular.module('urlShortener', ['ngAnimate', 'ui.router']);
