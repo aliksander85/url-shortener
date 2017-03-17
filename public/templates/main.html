@@ -19,7 +19,9 @@
 
         <div class="row">
             <div class="col-lg-6 col-lg-offset-3 col-md-8 col-md-offset-2">
-                <p ng-show="main.generatedShortUrl && main.generatedShortUrl.length > 0" class="result-link bg-success">{{ main.generatedShortUrl }}</p>
+                <p ng-show="main.generatedShortUrl && main.generatedShortUrl.length > 0" class="result-link bg-success">
+                    <a href="{{ main.generatedShortUrl }}" title="short url" target="_blank" rel="nofollow noopener">{{ main.generatedShortUrl }}</a>
+                </p>
                 <p ng-show="main.error && main.error.length > 0" class="result-link bg-danger">{{ main.error }}</p>
             </div>
         </div>
