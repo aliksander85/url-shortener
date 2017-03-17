@@ -16,6 +16,7 @@ function MainController(UrlService, $location, $timeout) {
     self.errorFullUrl = '';
     self.fullUrl = '';
     self.shortUrl = '';
+    self.reg = /^[a-z0-9]+$/i;
 
     self.sendUrls = sendUrls;
     self.hideMessage = hideMessage;
@@ -47,6 +48,11 @@ function MainController(UrlService, $location, $timeout) {
     function getOriginUrl () {
         if (!angular.isString(self.shortUrl) || !self.shortUrl.length) {
             self.errorFullUrl = 'shortUrl is required';
+            self.hideMessage('errorFullUrl');
+            return;
+        }
+        if (!self.reg.test(self.shortUrl)) {
+            self.errorFullUrl = 'shortUrl is invalid';
             self.hideMessage('errorFullUrl');
             return;
         }

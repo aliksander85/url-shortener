@@ -9,12 +9,20 @@ router.get('/', function(req, res) {
 
 /*GET */
 router.get('/:shortUrl', function (req, res) {
-  Url.findByShortUrl(req.params.shortUrl, function (err, result) {
-      if (err) {
-          res.render('index', { title: 'URL Shortener' });
-      }
-      res.redirect(301, result.originUrl);
-  });
+    if (req.params && req.params.shortUrl && /^[a-z0-9]+$/i.test(req.params.shortUrl)) {
+        Url.findByShortUrl(req.params.shortUrl, function (err, result) {
+            if (err) {
+                res.render('index', { title: 'URL Shortener' });
+            }
+            if (result && result.originUrl) {
+                res.redirect(301, result.originUrl);
+            } else {
+                res.render('index', { title: 'URL Shortener' });
+            }
+        });
+    } else {
+        res.render('index', { title: 'URL Shortener' });
+    }
 });
 
 module.exports = router;
