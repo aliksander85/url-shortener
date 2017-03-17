@@ -7,6 +7,9 @@ var bodyParser = require('body-parser');
 var mongoose = require('mongoose');
 var config = require('./config/database');
 
+// Fix warning of deprecated promise
+mongoose.Promise = global.Promise;
+
 // Connect To Database
 mongoose.connect(config.database);
 

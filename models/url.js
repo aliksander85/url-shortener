@@ -3,8 +3,8 @@ var config = require('../config/database');
 
 // Url Schema
 var UrlSchema = mongoose.Schema({
-    shortUrl: {type: String, unique: true, required: true},
-    originUrl: {type: String, unique: true, required: true}
+    shortUrl: String,
+    originUrl: String
 });
 
 var Url = module.exports = mongoose.model('Url', UrlSchema);
