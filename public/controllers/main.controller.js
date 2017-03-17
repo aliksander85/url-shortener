@@ -12,9 +12,14 @@ function MainController(UrlService, $location, $timeout) {
     self.generatedShortUrl = '';
     self.error = '';
     self.originUrl = '';
+    self.absUrl = $location.absUrl();
+    self.errorFullUrl = '';
+    self.fullUrl = '';
+    self.shortUrl = '';
 
     self.sendUrls = sendUrls;
     self.hideMessage = hideMessage;
+    self.getOriginUrl = getOriginUrl;
 
     function sendUrls() {
         if (!angular.isString(self.originUrl) || !self.originUrl.length) {
@@ -26,7 +31,7 @@ function MainController(UrlService, $location, $timeout) {
         self.error = '';
 
         UrlService.createUrl({originUrl: self.originUrl}).then(function (res) {
-            self.generatedShortUrl = $location.absUrl() + res.data.shortUrl;
+            self.generatedShortUrl = self.absUrl + res.data.shortUrl;
         }, function (err) {
             self.error = err.data.msg;
             self.hideMessage('error');
@@ -37,6 +42,23 @@ function MainController(UrlService, $location, $timeout) {
         $timeout(function () {
             self[key] = '';
         }, 2000);
+    }
+
+    function getOriginUrl () {
+        if (!angular.isString(self.shortUrl) || !self.shortUrl.length) {
+            self.errorFullUrl = 'shortUrl is required';
+            self.hideMessage('errorFullUrl');
+            return;
+        }
+        self.fullUrl = '';
+        self.errorFullUrl = '';
+
+        UrlService.getFullUrl({shortUrl: self.shortUrl}).then(function (res) {
+            self.fullUrl = res.data.originUrl;
+        }, function (err) {
+            self.errorFullUrl = err.data.msg;
+            self.hideMessage('errorFullUrl');
+        });
     }
 
 }

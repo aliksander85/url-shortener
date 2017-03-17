@@ -56,6 +56,18 @@ function checkShortUrl (shortUrl, callback) {
     })
 }
 
+function getItemByShortUrl (shortUrl, callback) {
+    Url.findByShortUrl(shortUrl, function (err, res) {
+        if (!err && !res) {
+            callback();
+        } else if (err) {
+            callback(null, {error: true, msg: err});
+        } else if (res) {
+            callback(res);
+        }
+    })
+}
+
 /* POST create short url. */
 router.post('/create', function(req, res) {
 
@@ -101,6 +113,20 @@ router.post('/create', function(req, res) {
 
     });
 
+});
+
+router.get('/getOrigin', function (req, res) {
+    var shortUrl = req.query.shortUrl.toString();
+
+    getItemByShortUrl(shortUrl, function (data, error) {
+        if (error) {
+            res.status(500).send(error);
+        }
+        if (!data) {
+            res.status(404).send({msg: 'URL not found'})
+        }
+        res.status(200).send(data);
+    });
 });
 
 module.exports = router;

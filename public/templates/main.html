@@ -28,4 +28,37 @@
 
     </div>
 
+    <div class="jumbotron col-lg-12">
+        <form>
+            <div class="row">
+                <div class="form-group col-lg-6 col-lg-offset-3 col-md-8 col-md-offset-2">
+                    <div class="form-group">
+                        <label class="control-label">Enter a short URL generated before: </label>
+                        <div class="input-group">
+                            <span class="input-group-addon">{{ main.absUrl }}</span>
+                            <input type="text" placeholder="Enter a short URL generated before" class="form-control" id="shortUrl" ng-model="main.shortUrl" name="shortUrl">
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-lg-1 col-lg-offset-3 col-md-3 col-md-offset-2 col-sm-6">
+                    <button type="submit" class="btn btn-primary" ng-click="main.getOriginUrl()" ng-disabled="!main.shortUrl">Get origin URL</button>
+                    <button type="reset" class="btn btn-warning">Cancel</button>
+                </div>
+            </div>
+        </form>
+
+        <div class="row">
+            <div class="col-lg-6 col-lg-offset-3 col-md-8 col-md-offset-2">
+                <p ng-show="main.fullUrl && main.fullUrl.length > 0" class="result-link bg-success">
+                    <a href="{{ main.fullUrl }}" title="short url" target="_blank" rel="nofollow noopener">{{ main.fullUrl }}</a>
+                </p>
+                <p ng-show="main.errorFullUrl && main.errorFullUrl.length > 0" class="result-link bg-danger">{{ main.errorFullUrl }}</p>
+            </div>
+        </div>
+
+    </div>
+
 </div>
