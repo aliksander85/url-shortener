@@ -1,4 +1,9 @@
 angular.module('urlShortener')
-    .controller('MainController', function () {
+    .controller('MainController', [
+        '$scope',
+        MainController
+    ]);
 
-    });
+function MainController($scope) {
+
+}

@@ -16,3 +16,7 @@ h1 {
 .navbar {
   border-radius: 0;
 }
+
+.result-link {
+  margin-top: 15px;
+}

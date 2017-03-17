@@ -1,3 +1,26 @@
-<div class="jumbotron">
-    
+<div class="container-fluid">
+
+    <div class="jumbotron col-lg-12">
+        <form>
+            <div class="row">
+                <div class="form-group col-lg-6 col-lg-offset-3 col-md-8 col-md-offset-2">
+                    <label for="originUrl">Enter a valid URL: </label>
+                    <input type="url" placeholder="Enter a valid URL" class="form-control" id="originUrl" ng-model="originUrl">
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-lg-1 col-lg-offset-3 col-md-3 col-md-offset-2 col-sm-6">
+                    <button type="submit" class="btn btn-default">Get short URL</button>
+                </div>
+            </div>
+        </form>
+
+        <div class="row">
+            <p class="result-link col-lg-6 col-lg-offset-3 col-md-8 col-md-offset-2"></p>
+        </div>
+
+
+    </div>
+
 </div>
