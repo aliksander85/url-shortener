@@ -2,7 +2,7 @@ angular
     .module('urlShortener')
     .config(routerConfig);
 
-function routerConfig($stateProvider, $urlRouterProvider) {
+function routerConfig($stateProvider, $urlRouterProvider, $locationProvider) {
     $stateProvider
         .state('home', {
             url: '/',
@@ -11,4 +11,5 @@ function routerConfig($stateProvider, $urlRouterProvider) {
             controllerAs: 'main'
         });
     $urlRouterProvider.otherwise('/');
+    $locationProvider.html5Mode(true);
 }
