@@ -5,6 +5,12 @@ angular.module('urlShortener')
     ]);
 
 function UrlService($http) {
-    "use strict";
     var self = this;
+
+    self.createUrl = function (data) {
+        return $http.post('/urls/create', data);
+    };
+
+    return self;
+
 }

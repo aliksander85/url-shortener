@@ -5,21 +5,24 @@
             <div class="row">
                 <div class="form-group col-lg-6 col-lg-offset-3 col-md-8 col-md-offset-2">
                     <label for="originUrl">Enter a valid URL: </label>
-                    <input type="url" placeholder="Enter a valid URL" class="form-control" id="originUrl" ng-model="originUrl">
+                    <input type="url" placeholder="Enter a valid URL" class="form-control" id="originUrl" ng-model="main.originUrl" name="originUrl">
                 </div>
             </div>
 
             <div class="row">
                 <div class="col-lg-1 col-lg-offset-3 col-md-3 col-md-offset-2 col-sm-6">
-                    <button type="submit" class="btn btn-default">Get short URL</button>
+                    <button type="submit" class="btn btn-primary" ng-click="main.sendUrls()" ng-disabled="!main.originUrl">Generate short URL</button>
+                    <button type="reset" class="btn btn-warning">Cancel</button>
                 </div>
             </div>
         </form>
 
         <div class="row">
-            <p class="result-link col-lg-6 col-lg-offset-3 col-md-8 col-md-offset-2"></p>
+            <div class="col-lg-6 col-lg-offset-3 col-md-8 col-md-offset-2">
+                <p ng-show="main.generatedShortUrl && main.generatedShortUrl.length > 0" class="result-link bg-success">{{ main.generatedShortUrl }}</p>
+                <p ng-show="main.error && main.error.length > 0" class="result-link bg-danger">{{ main.error }}</p>
+            </div>
         </div>
-
 
     </div>
 
