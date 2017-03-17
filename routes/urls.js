@@ -1,14 +1,21 @@
 var express = require('express');
 var router = express.Router();
 var randomUrlUtil = require('../utils/random-url');
-var https = require('https');
+var request = require('request');
 
 var Url = require('../models/url');
 
 function checkOriginURL (originUrl, callback) {
-    https.get(originUrl, function (res) {
-        console.log('statusCode:', res.statusCode);
-        if (res.statusCode.toString()[0] == '2' || res.statusCode.toString()[0] == '3') {
+
+    request(originUrl, function (error, response, body) {
+        console.log('error:', error); // Print the error if one occurred
+        console.log('statusCode:', response && response.statusCode); // Print the response status code if a response was received
+
+        if (error) {
+            return callback({error: true, msg: 'origin URL is not reachable'});
+        }
+
+        if (response && response.statusCode.toString()[0] && (response.statusCode.toString()[0] == '2' || response.statusCode.toString()[0] == '3')) {
             checkExistOriginURL(originUrl, function (err) {
                 if (err) {
                     callback(err);
@@ -17,12 +24,11 @@ function checkOriginURL (originUrl, callback) {
                 }
             });
         } else {
-            callback({success: false, msg: 'origin URL is not reachable'})
+            callback({error: true, msg: 'origin URL is not reachable'})
         }
-    }).on('error', function (e) {
-        console.error(e);
-        callback({success: false, msg: e})
+
     });
+
 }
 
 function checkExistOriginURL (originUrl, callback) {
@@ -30,9 +36,9 @@ function checkExistOriginURL (originUrl, callback) {
         if (!err && !res) {
             callback();
         } else if (err) {
-            callback({success: false, msg: err});
+            callback({error: true, msg: err});
         } else if (res) {
-            callback({success: false, msg: 'This origin URL already exists'});
+            callback({error: true, msg: 'This origin URL is already exists'});
         }
 
     });
@@ -43,9 +49,9 @@ function checkShortUrl (shortUrl, callback) {
         if (!err && !res) {
             callback();
         } else if (err) {
-            callback({success: false, msg: err});
+            callback({error: true, msg: err});
         } else if (res) {
-            callback({success: false, msg: 'This short URL already exists'});
+            callback({error: true, msg: 'This short URL already exists'});
         }
     })
 }
@@ -53,13 +59,15 @@ function checkShortUrl (shortUrl, callback) {
 /* POST create short url. */
 router.post('/create', function(req, res) {
 
+    var originUrl = req.body.originUrl.toString();
+
     // check url if exists
-    checkOriginURL(req.body.originUrl, function (err) {
+    checkOriginURL(originUrl, function (err) {
 
         var shortUrl;
 
         if (err) {
-            return res.json(err);
+            return res.status(500).send(err);
         }
 
         // check if user set a desired url
@@ -73,19 +81,19 @@ router.post('/create', function(req, res) {
         checkShortUrl(shortUrl, function (err) {
 
             if (err) {
-                return res.json(err);
+                return res.status(500).send(err);
             }
 
             var newUrlPair = new Url({
                 shortUrl: shortUrl,
-                originUrl: req.body.originUrl
+                originUrl: originUrl
             });
 
             Url.addUrlPair(newUrlPair, function (err, urlPair) {
                 if (err) {
-                    res.json({success: false, msg: 'Failed to create a URL pair', real: err});
+                    res.status(500).send({error: true, msg: 'Failed to create a URL pair', real: err});
                 } else {
-                    res.json({success: true, msg: 'URL pair added', shortUrl: urlPair.shortUrl});
+                    res.status(200).send({success: true, msg: 'URL pair added', shortUrl: urlPair.shortUrl});
                 }
             });
 
